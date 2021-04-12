@@ -37,7 +37,7 @@ int main() {
    * To get the value from the device call read.
    */
   temperatureSetPoint.read();
-
+#if 0
   /*
    * Now you can treat the accessor as if it was a regular float variable.
    */
@@ -54,6 +54,7 @@ int main() {
    * It is good style to close the device when you are done, although
    * this would happen automatically once the device goes out of scope.
    */
+#endif
   myDevice.close();
 
   return 0;

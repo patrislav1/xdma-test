@@ -1,1 +1,1 @@
-MY_DEVICE       (dummy?map=my_device.map)
+MY_DEVICE       (xdma:xdma/card0?map=my_device.map)
