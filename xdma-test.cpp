@@ -30,8 +30,8 @@ int main() {
    *
    * The example device has a temperature controller with a set value.
    */
-  ChimeraTK::ScalarRegisterAccessor<float> temperatureSetPoint =
-      myDevice.getScalarRegisterAccessor<float>("TEMPERATURE_CONTROLLER/SET_POINT");
+  ChimeraTK::ScalarRegisterAccessor<uint32_t> temperatureSetPoint =
+      myDevice.getScalarRegisterAccessor<uint32_t>("TRAFFIC_GEN.ST_CTRL");
 
   /*
    * To get the value from the device call read.
