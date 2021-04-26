@@ -17,10 +17,19 @@ public:
     CtkRegWrapper(ChimeraTK::Device& dev, const std::string& name)
     : _accessor{dev.getScalarRegisterAccessor<uint32_t>(name)} {}
 
-    T rd() {
+    uint32_t rd_int() {
         _accessor.read();
+        return _accessor;
+    }
+
+    void wr_int(uint32_t val) {
+        _accessor = val;
+        _accessor.write();
+    }
+
+    T rd() {
         RegCast tmp = {
-            .raw = _accessor
+            .raw = rd_int()
         };
         return tmp.data;
     }
@@ -29,7 +38,6 @@ public:
         RegCast tmp = {
             .data = val
         };
-        _accessor = tmp.raw;
-        _accessor.write();
+        wr_int(tmp.raw);
     }
 };

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 PROJECT("XDMA-Test")
+find_package(Boost 1.65 COMPONENTS log REQUIRED)
 
 FIND_PACKAGE(ChimeraTK-DeviceAccess 01.02 REQUIRED)
 include_directories(SYSTEM ${ChimeraTK-DeviceAccess_INCLUDE_DIRS})
@@ -11,6 +12,7 @@ add_executable(xdma-test ${SOURCE_FILES})
 target_include_directories(xdma-test PRIVATE inc)
 target_link_libraries(xdma-test ${ChimeraTK-DeviceAccess_LIBRARIES})
 set_target_properties(xdma-test PROPERTIES LINK_FLAGS "${ChimeraTK-DeviceAccess_LINKER_FLAGS}")
+target_link_libraries(xdma-test Boost::log)
 
 install(TARGETS xdma-test DESTINATION bin)
 
