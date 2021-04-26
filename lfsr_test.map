@@ -1,0 +1,22 @@
+# name                    nr of elements       address          size           bar    width   fracbits    signed   
+
+TRAFFIC_GEN.ST_CTRL           0x00000001    0x00890030    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.ST_CONFIG         0x00000001    0x00890034    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_LEN            0x00000001    0x00890038    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_COUNT          0x00000001    0x0089003C    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_TSTRB0         0x00000001    0x00890040    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_TSTRB1         0x00000001    0x00890044    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_TSTRB2         0x00000001    0x00890048    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.TR_TSTRB3         0x00000001    0x0089004C    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.EX_TR_LEN         0x00000001    0x00890050    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.ERR_STATUS        0x00000001    0x00890070    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.ERR_EN            0x00000001    0x00890074    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.ERR_INT_EN        0x00000001    0x00890078    0x00000004    0x00000000       32         0         0
+TRAFFIC_GEN.ERR_CNT           0x00000001    0x0089007C    0x00000004    0x00000000       32         0         0
+GPIO.STATUS                   0x00000001    0x00801000    0x00000004    0x00000000       32         0         0
+S2MM.DMACR                    0x00000001    0x00910030    0x00000004    0x00000000       32         0         0
+S2MM.DMASR                    0x00000001    0x00910034    0x00000004    0x00000000       32         0         0
+S2MM.CURDESC                  0x00000001    0x00910038    0x00000004    0x00000000       32         0         0
+S2MM.CURDESC_MSB              0x00000001    0x0091003C    0x00000004    0x00000000       32         0         0
+S2MM.TAILDESC                 0x00000001    0x00910040    0x00000004    0x00000000       32         0         0
+S2MM.TAILDESC_MSB             0x00000001    0x00910044    0x00000004    0x00000000       32         0         0

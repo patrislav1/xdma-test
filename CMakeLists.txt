@@ -27,6 +27,6 @@ foreach( SOURCE_FILE ${SOURCE_FILES} )
 endforeach( SOURCE_FILE )
 
 # To run the examples we need the map files. Copy them to the build folder.
-FILE(COPY example.dmap my_device.map DESTINATION ${PROJECT_BINARY_DIR})
+FILE(COPY example.dmap lfsr_test.map DESTINATION ${PROJECT_BINARY_DIR})
 
 #add_subdirectory ("custom_backend_registration")
