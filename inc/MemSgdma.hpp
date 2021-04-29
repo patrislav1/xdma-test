@@ -9,6 +9,9 @@
 
 #include <boost/log/trivial.hpp>
 
+#include <ChimeraTK/Device.h>
+#include <ChimeraTK/Utilities.h>
+
 namespace blt = boost::log::trivial;
 
 struct UioRegion {
@@ -18,6 +21,9 @@ struct UioRegion {
 
 class MemSgdma {
     static constexpr int DESC_ADDR_STEP = 0x40;
+    static constexpr int BUF_LEN = 2 * 1024 * 1024;
+    static constexpr uintptr_t fpga_mem_phys_addr = 0x400000000UL;
+    static constexpr uintptr_t bram_ctrl_0_base = 0x00920000UL;
 
     struct __attribute__((packed)) S2mmDescControl {
         uint32_t buffer_len : 26;
@@ -50,25 +56,30 @@ class MemSgdma {
     static_assert(sizeof(S2mmDescStatus) == 4, "size of S2mmDescStatus must be 4");
     static_assert(sizeof(S2mmDesc) == 0x38, "size of S2mmDesc must be 0x34+4 for alignment");
 
-    S2mmDesc &_desc(size_t i) const;
-
     size_t _nr_cyc_desc;
     size_t _next_readable_buf;
+    std::vector<uintptr_t> _dst_buf_addrs;
 
     mutable boost::log::sources::severity_logger<blt::severity_level> _slg;
 
-  public:
-    static constexpr int BUF_LEN = 2 * 1024 * 1024;
+    std::vector<ChimeraTK::OneDRegisterAccessor<int32_t>> _buffers;
+    std::vector<ChimeraTK::OneDRegisterAccessor<int32_t>> _descs;
 
-    void write_cyc_mode(const std::vector<uintptr_t> &dst_buf_addrs);
+    S2mmDesc _rd_desc(size_t i);
+    void _wr_desc(size_t i, const S2mmDesc& val);
 
-    void print_desc(const S2mmDesc &desc) const;
+public:
+    explicit MemSgdma(ChimeraTK::Device& dev);
 
-    void print_descs() const;
+    void init_cyc_mode();
+
+    void print_desc(const S2mmDesc &desc);
+
+    void print_descs();
 
     uintptr_t get_first_desc_addr() const;
 
-    std::vector<UioRegion> get_full_buffers();
+    std::vector<int32_t> get_full_buffers();
 };
 
 std::ostream &operator<<(std::ostream &os, const UioRegion &buf_info);
