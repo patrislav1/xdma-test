@@ -6,7 +6,7 @@ MemSgdma::MemSgdma(ChimeraTK::Device& dev) {
     // Initialize ChimeraTK accessors for sgdma buffers & descriptors
     uintptr_t offs_buf = 0;
     uintptr_t offs_desc = 0;
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 4; i++) {
         BOOST_LOG_SEV(_slg, blt::severity_level::info)
             << "MemSgdma: creating accessor #" << i;
         _buffers.emplace_back(
@@ -60,7 +60,7 @@ void MemSgdma::init_cyc_mode() {
         BOOST_LOG_SEV(_slg, blt::severity_level::trace)
             << "MemSgdma: dest buf addr = 0x" << std::hex << dst_buf_addr << std::dec;
 
-        uintptr_t nxtdesc = bram_ctrl_0_base +  ((i + 1) % _nr_cyc_desc) * DESC_ADDR_STEP;
+        uintptr_t nxtdesc = (bram_ctrl_0_base | pcie_axi4l_offset) +  ((i + 1) % _nr_cyc_desc) * DESC_ADDR_STEP;
 
 #pragma GCC diagnostic push // We're OK that everything not listed is zero-initialized.
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -102,7 +102,7 @@ void MemSgdma::print_descs() {
 }
 
 uintptr_t MemSgdma::get_first_desc_addr() const {
-    return bram_ctrl_0_base;
+    return bram_ctrl_0_base | pcie_axi4l_offset;
 }
 
 std::ostream &operator<<(std::ostream &os, const UioRegion &buf_info) {

@@ -24,6 +24,7 @@ class MemSgdma {
     static constexpr int BUF_LEN = 2 * 1024 * 1024;
     static constexpr uintptr_t fpga_mem_phys_addr = 0x400000000UL;
     static constexpr uintptr_t bram_ctrl_0_base = 0x00920000UL;
+    static constexpr uintptr_t pcie_axi4l_offset = 0x88000000;
 
     struct __attribute__((packed)) S2mmDescControl {
         uint32_t buffer_len : 26;
