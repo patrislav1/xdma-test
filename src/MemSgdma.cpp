@@ -6,7 +6,7 @@ MemSgdma::MemSgdma(ChimeraTK::Device& dev) {
     // Initialize ChimeraTK accessors for sgdma buffers & descriptors
     uintptr_t offs_buf = 0;
     uintptr_t offs_desc = 0;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 32; i++) {
         BOOST_LOG_SEV(_slg, blt::severity_level::info)
             << "MemSgdma: creating accessor #" << i;
         _buffers.emplace_back(
@@ -123,7 +123,10 @@ std::vector<int32_t> MemSgdma::get_full_buffers() {
         _buffers[i].read();
         std::vector<int32_t> tmp(_buffers[i].getNElements());
         _buffers[i].swap(tmp);
-        result.insert(result.end(), tmp.begin(), tmp.end());
+        BOOST_LOG_SEV(_slg, blt::severity_level::trace) <<
+            "save buf #" << _next_readable_buf << " @ 0x" << std::hex << desc.buffer_addr;
+
+        result.insert(result.end(), tmp.begin(), tmp.begin() + desc.status.buffer_len / sizeof(tmp[0]));
 
         desc.status.cmpit = 0;
         _wr_desc(_next_readable_buf, desc);

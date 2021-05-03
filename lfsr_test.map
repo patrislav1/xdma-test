@@ -29,5 +29,5 @@ S2MM.TAILDESC_MSB             0x00000001    0x00910044    0x00000004    0x000000
 # Buffer for DMA descriptors
 FPGA_MEM.SGDMA_DESC           0x00000800    0x00920000    0x00002000    0x00000000
 
-# Buffer for DMA data                     64 bit doesnt work?!?!
+# Buffer for DMA data
 FPGA_MEM.SGDMA_BUF            0x01000000   0x400000000    0x04000000    0x0000000d
