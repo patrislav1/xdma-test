@@ -5,12 +5,15 @@
 #include <chrono>
 #include <thread>
 #include <optional>
+#include <boost/program_options.hpp>
 
 #include "GpioStatus.hpp"
 #include "MemSgdma.hpp"
 #include "AxiDmaIf.hpp"
 #include "TrafficGen.hpp"
 #include "AxiTrafficGenLfsr.hpp"
+
+namespace bpo = boost::program_options;
 
 using namespace std::chrono_literals;
 
@@ -62,7 +65,34 @@ bool check_vals(const std::vector<int32_t> &words)
     return true;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    bpo::options_description desc("AXI DMA demo");
+    bool debug, trace;
+    uint16_t pkt_pause;
+    uint16_t nr_pkts;
+    uint32_t pkt_len;
+
+    // clang-format off
+    desc.add_options()
+    ("help,h", "this help")
+    ("debug", bpo::bool_switch(&debug), "enable verbose output (debug level)")
+    ("trace", bpo::bool_switch(&trace), "enable even more verbose output (trace level)")
+    ("pkt_pause", bpo::value<uint16_t>(&pkt_pause)->default_value(10), "pause between pkts - see AXI TG user's manual")
+    ("nr_pkts", bpo::value<uint16_t>(&nr_pkts)->default_value(1), "number of packets to generate - see AXI TG user's manual")
+    ("pkt_len", bpo::value<uint32_t>(&pkt_len)->default_value(1024), "packet length - see AXI TG user's manual")
+    ;
+    // clang-format on
+
+    bpo::variables_map vm;
+    bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
+
+    if (vm.count("help")) {
+        std::cout << desc << "\n";
+        return 0;
+    }
+
+    bpo::notify(vm);
+
     ChimeraTK::setDMapFilePath("example.dmap");
     ChimeraTK::Device zupExample("ZUP_EXAMPLE_APP");
 
@@ -74,19 +104,17 @@ int main() {
     }
 
     AxiDmaIf axi_dma{zupExample};
-    MemSgdma mem_sgdma{zupExample};
+    MemSgdma mem_sgdma{zupExample, 16 * pkt_len};
     TrafficGen traffic_gen{zupExample};
 
     mem_sgdma.init_cyc_mode();
     axi_dma.start(mem_sgdma.get_first_desc_addr());
-    traffic_gen.start(8, 1024, 65000);
+    traffic_gen.start(nr_pkts, pkt_len, pkt_pause);
 
-    int i = 100;
+    int i = 10000;
     while (i--) {
-        std::this_thread::sleep_for(1ms);
         auto res = mem_sgdma.get_full_buffers();
         if (!res.empty()) {
-            std::cout << std::dec << "res: " << res.size() * sizeof(res[0]) << std::endl;
             if (!check_vals(res)) {
                 break;
             }
