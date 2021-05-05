@@ -63,16 +63,15 @@ void MemSgdma::init_cyc_mode() {
 
         uintptr_t nxtdesc = (bram_ctrl_0_base | pcie_axi4l_offset) +  ((i + 1) % _nr_cyc_desc) * DESC_ADDR_STEP;
 
-#pragma GCC diagnostic push // We're OK that everything not listed is zero-initialized.
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
         _wr_desc(i++, {
             .nxtdesc = nxtdesc,
             .buffer_addr = dst_buf_addr,
-            .control = S2mmDescControl{.buffer_len = _buf_len},
+            .control = S2mmDescControl{
+                .buffer_len = static_cast<uint32_t>(_buf_len)
+            },
             .status = {0},
             .app = {0}
         });
-#pragma GCC diagnostic pop
     }
 }
 

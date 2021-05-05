@@ -21,7 +21,6 @@ void AxiDmaIf::start(uintptr_t start_desc) {
     BOOST_LOG_SEV(_slg, blt::severity_level::debug)
         << "AxiDmaIf: start, start_desc = " << std::hex << start_desc << std::dec;
 
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     _ctrlReg.wr({
         .Reset = 1
     });
