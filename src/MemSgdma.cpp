@@ -2,7 +2,8 @@
 
 #include "MemSgdma.hpp"
 
-MemSgdma::MemSgdma(ChimeraTK::Device& dev) {
+MemSgdma::MemSgdma(ChimeraTK::Device& dev, size_t buf_len)
+:_buf_len(buf_len) {
     // Initialize ChimeraTK accessors for sgdma buffers & descriptors
     uintptr_t offs_buf = 0;
     uintptr_t offs_desc = 0;
@@ -12,7 +13,7 @@ MemSgdma::MemSgdma(ChimeraTK::Device& dev) {
         _buffers.emplace_back(
             dev.getOneDRegisterAccessor<int32_t>(
                 "FPGA_MEM.SGDMA_BUF",
-                BUF_LEN / sizeof(int32_t),
+                _buf_len / sizeof(int32_t),
                 offs_buf / sizeof(int32_t),
                 {ChimeraTK::AccessMode::raw}
             )
@@ -26,7 +27,7 @@ MemSgdma::MemSgdma(ChimeraTK::Device& dev) {
             )
         );
         _dst_buf_addrs.push_back(fpga_mem_phys_addr + offs_buf);
-        offs_buf += BUF_LEN;
+        offs_buf += _buf_len;
         offs_desc += DESC_ADDR_STEP;
     };
 };
@@ -67,7 +68,7 @@ void MemSgdma::init_cyc_mode() {
         _wr_desc(i++, {
             .nxtdesc = nxtdesc,
             .buffer_addr = dst_buf_addr,
-            .control = S2mmDescControl{.buffer_len = BUF_LEN},
+            .control = S2mmDescControl{.buffer_len = _buf_len},
             .status = {0},
             .app = {0}
         });
@@ -120,6 +121,7 @@ std::vector<int32_t> MemSgdma::get_full_buffers() {
             break;
         }
 
+        assert(_buf_len == desc.status.buffer_len && "buffer len mismatch");
         _buffers[i].read();
         std::vector<int32_t> tmp(_buffers[i].getNElements());
         _buffers[i].swap(tmp);

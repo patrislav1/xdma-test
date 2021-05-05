@@ -21,7 +21,6 @@ struct UioRegion {
 
 class MemSgdma {
     static constexpr int DESC_ADDR_STEP = 0x40;
-    static constexpr int BUF_LEN = 2 * 1024 * 1024;
     static constexpr uintptr_t fpga_mem_phys_addr = 0x400000000UL;
     static constexpr uintptr_t bram_ctrl_0_base = 0x00920000UL;
     static constexpr uintptr_t pcie_axi4l_offset = 0x88000000;
@@ -58,6 +57,7 @@ class MemSgdma {
     static_assert(sizeof(S2mmDesc) == 0x38, "size of S2mmDesc must be 0x34+4 for alignment");
 
     size_t _nr_cyc_desc;
+    size_t _buf_len;
     size_t _next_readable_buf;
     std::vector<uintptr_t> _dst_buf_addrs;
 
@@ -70,7 +70,7 @@ class MemSgdma {
     void _wr_desc(size_t i, const S2mmDesc& val);
 
 public:
-    explicit MemSgdma(ChimeraTK::Device& dev);
+    explicit MemSgdma(ChimeraTK::Device& dev, size_t buf_len);
 
     void init_cyc_mode();
 
