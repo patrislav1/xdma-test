@@ -15,7 +15,7 @@ class CtkRegWrapper {
 public:
     CtkRegWrapper() = delete;
     CtkRegWrapper(ChimeraTK::Device& dev, const std::string& name)
-    : _accessor{dev.getScalarRegisterAccessor<uint32_t>(name)} {}
+    : _accessor{ dev.getScalarRegisterAccessor<uint32_t>(name) } {}
 
     uint32_t rd_int() {
         _accessor.read();

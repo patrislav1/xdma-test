@@ -35,11 +35,10 @@ class TrafficGen {
 public:
     TrafficGen() = delete;
     TrafficGen(ChimeraTK::Device& dev)
-    :_ctrl{dev, "TRAFFIC_GEN.ST_CTRL"}
-    ,_cfg{dev, "TRAFFIC_GEN.ST_CONFIG"}
-    ,_trLen{dev, "TRAFFIC_GEN.TR_LEN"}
-    ,_exTrLen{dev, "TRAFFIC_GEN.EX_TR_LEN"}
-    {}
+    : _ctrl{ dev, "TRAFFIC_GEN.ST_CTRL" }
+    , _cfg{ dev, "TRAFFIC_GEN.ST_CONFIG" }
+    , _trLen{ dev, "TRAFFIC_GEN.TR_LEN" }
+    , _exTrLen{ dev, "TRAFFIC_GEN.EX_TR_LEN" } {}
 
     void start(uint16_t nr_pkts, uint32_t pkt_size, uint16_t pkt_pause);
     void stop();

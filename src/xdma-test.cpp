@@ -1,24 +1,23 @@
+#include <chrono>
+#include <iostream>
+#include <optional>
+#include <thread>
+
 #include <ChimeraTK/Device.h>
 #include <ChimeraTK/Utilities.h>
-#include <iostream>
 
-#include <chrono>
-#include <thread>
-#include <optional>
-#include <boost/program_options.hpp>
-
+#include "AxiDmaIf.hpp"
+#include "AxiTrafficGenLfsr.hpp"
 #include "GpioStatus.hpp"
 #include "MemSgdma.hpp"
-#include "AxiDmaIf.hpp"
 #include "TrafficGen.hpp"
-#include "AxiTrafficGenLfsr.hpp"
+#include <boost/program_options.hpp>
 
 namespace bpo = boost::program_options;
 
 using namespace std::chrono_literals;
 
-static void vec_dump(const std::vector<int32_t> &vec)
-{
+static void vec_dump(const std::vector<int32_t>& vec) {
     constexpr size_t wordsPerLine = 8;
     size_t n;
     for (n = 0; n < vec.size(); n++) {
@@ -35,18 +34,17 @@ static void vec_dump(const std::vector<int32_t> &vec)
     }
 }
 
-bool check_vals(const std::vector<int32_t> &words)
-{
-//    vec_dump(words);
+bool check_vals(const std::vector<int32_t>& words) {
+    //    vec_dump(words);
 
     static std::optional<AxiTrafficGenLfsr> lfsr;
 
-    const uint16_t *vals = reinterpret_cast<const uint16_t *>(&words[0]);
+    const uint16_t* vals = reinterpret_cast<const uint16_t*>(&words[0]);
     const size_t numBytes = words.size() * sizeof(words[0]);
 
     if (!lfsr) {
         uint16_t seed = vals[0];
-        lfsr = AxiTrafficGenLfsr{seed};
+        lfsr = AxiTrafficGenLfsr{ seed };
     }
 
     for (unsigned int i = 0; i < numBytes / sizeof(vals[0]) / 8; i++) {
@@ -55,8 +53,8 @@ bool check_vals(const std::vector<int32_t> &words)
             uint16_t recv_val = vals[i * 8 + j];
             if (exp_val != recv_val) {
                 std::cerr
-                    << "mismatch, at " << i * 8 + j << " recv = " << std::hex << recv_val
-                    << ", exp = " << exp_val << "\n";
+                  << "mismatch, at " << i * 8 + j << " recv = " << std::hex << recv_val
+                  << ", exp = " << exp_val << "\n";
                 return false;
             }
         }
@@ -65,7 +63,7 @@ bool check_vals(const std::vector<int32_t> &words)
     return true;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     bpo::options_description desc("AXI DMA demo");
     bool debug, trace;
     uint16_t pkt_pause;
@@ -98,14 +96,14 @@ int main(int argc, char *argv[]) {
 
     zupExample.open();
 
-    GpioStatus gpioStatus{zupExample};
+    GpioStatus gpioStatus{ zupExample };
     if (!gpioStatus.is_ddr4_init_calib_complete()) {
         throw std::runtime_error("DDR4 init calib is not complete");
     }
 
-    AxiDmaIf axi_dma{zupExample};
-    MemSgdma mem_sgdma{zupExample, 16 * pkt_len};
-    TrafficGen traffic_gen{zupExample};
+    AxiDmaIf axi_dma{ zupExample };
+    MemSgdma mem_sgdma{ zupExample, 16 * pkt_len };
+    TrafficGen traffic_gen{ zupExample };
 
     mem_sgdma.init_cyc_mode();
     axi_dma.start(mem_sgdma.get_first_desc_addr());

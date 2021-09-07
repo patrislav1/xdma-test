@@ -15,8 +15,8 @@ class GpioStatus {
 public:
     GpioStatus() = delete;
     GpioStatus(ChimeraTK::Device& dev)
-    : _gpioStatus{dev, "GPIO.STATUS"} {}
-    
+    : _gpioStatus{ dev, "GPIO.STATUS" } {}
+
     bool is_ddr4_init_calib_complete() {
         return _gpioStatus.rd().ddr4_init_calib_complete;
     }

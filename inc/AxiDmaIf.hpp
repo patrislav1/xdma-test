@@ -52,23 +52,22 @@ class AxiDmaIf {
     CtkRegWrapper<uint32_t> _curDescMsb;
     CtkRegWrapper<uint32_t> _tailDesc;
     CtkRegWrapper<uint32_t> _tailDescMsb;
- 
+
     mutable boost::log::sources::severity_logger<blt::severity_level> _slg;
 
-  public:
+public:
     AxiDmaIf() = delete;
     AxiDmaIf(ChimeraTK::Device& dev)
-    : _ctrlReg{dev, "S2MM.DMACR"}
-    , _statusReg{dev, "S2MM.DMASR"}
-    , _curDesc{dev, "S2MM.CURDESC"}
-    , _curDescMsb{dev, "S2MM.CURDESC_MSB"}
-    , _tailDesc{dev, "S2MM.TAILDESC"}
-    , _tailDescMsb{dev, "S2MM.TAILDESC_MSB"}
-    {}
+    : _ctrlReg{ dev, "S2MM.DMACR" }
+    , _statusReg{ dev, "S2MM.DMASR" }
+    , _curDesc{ dev, "S2MM.CURDESC" }
+    , _curDescMsb{ dev, "S2MM.CURDESC_MSB" }
+    , _tailDesc{ dev, "S2MM.TAILDESC" }
+    , _tailDescMsb{ dev, "S2MM.TAILDESC_MSB" } {}
 
     void start(uintptr_t start_desc);
 
-// this has to be done in the backend?
-//  void arm_interrupt();
-//  uint32_t clear_interrupt();
+    // this has to be done in the backend?
+    //  void arm_interrupt();
+    //  uint32_t clear_interrupt();
 };

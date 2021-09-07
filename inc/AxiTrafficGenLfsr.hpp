@@ -15,8 +15,9 @@
 
 /// implements LFSR as described in "AXI Traffic Generator v3.0"
 class AxiTrafficGenLfsr {
-  public:
-    AxiTrafficGenLfsr(uint16_t seed) : val{seed} {};
+public:
+    AxiTrafficGenLfsr(uint16_t seed)
+    : val{ seed } {};
 
     /// set seed to a specific value
     void set(uint16_t seed) { val = seed; }
@@ -32,6 +33,6 @@ class AxiTrafficGenLfsr {
     /// get value without advancing the LFSR
     uint16_t get() const { return val; }
 
-  private:
+private:
     uint16_t val;
 };

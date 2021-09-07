@@ -1,0 +1,23 @@
+BasedOnStyle: Mozilla
+
+BreakBeforeBraces: Attach
+
+IndentWidth: 4
+AccessModifierOffset: -4
+ConstructorInitializerIndentWidth: 0
+
+IncludeCategories:
+  - Regex:           '<[a-zA-Z0-9_]+>' # c++ standard headers (no extension)
+    Priority:        2
+  - Regex:           '<[a-zA-Z0-9/]+\.(h|hpp)>' # library headers (with extension)
+    Priority:        3
+  - Regex:           '.*'
+    Priority:        4
+
+IncludeBlocks: Regroup
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+ReflowComments: true
+ColumnLimit: 0

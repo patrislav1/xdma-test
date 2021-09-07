@@ -2,15 +2,14 @@
 
 #pragma once
 
-#include <vector>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <ostream>
-
-#include <boost/log/trivial.hpp>
+#include <vector>
 
 #include <ChimeraTK/Device.h>
 #include <ChimeraTK/Utilities.h>
+#include <boost/log/trivial.hpp>
 
 namespace blt = boost::log::trivial;
 
@@ -74,7 +73,7 @@ public:
 
     void init_cyc_mode();
 
-    void print_desc(const S2mmDesc &desc);
+    void print_desc(const S2mmDesc& desc);
 
     void print_descs();
 
@@ -83,4 +82,4 @@ public:
     std::vector<int32_t> get_full_buffers();
 };
 
-std::ostream &operator<<(std::ostream &os, const UioRegion &buf_info);
+std::ostream& operator<<(std::ostream& os, const UioRegion& buf_info);
