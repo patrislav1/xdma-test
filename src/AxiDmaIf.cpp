@@ -15,7 +15,6 @@
 
 #include <boost/log/core/core.hpp>
 #include <boost/log/sources/logger.hpp>
-#include <boost/log/trivial.hpp>
 
 void AxiDmaIf::start(uintptr_t start_desc) {
     BOOST_LOG_SEV(_slg, blt::severity_level::debug)

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <boost/log/trivial.hpp>
+
 #include "CtkRegWrapper.hpp"
 
 namespace blt = boost::log::trivial;
