@@ -54,6 +54,7 @@ class AxiDmaIf {
     CtkRegWrapper<uint32_t> _curDescMsb;
     CtkRegWrapper<uint32_t> _tailDesc;
     CtkRegWrapper<uint32_t> _tailDescMsb;
+    ChimeraTK::VoidRegisterAccessor _event;
 
     mutable boost::log::sources::severity_logger<blt::severity_level> _slg;
 
@@ -65,11 +66,11 @@ public:
     , _curDesc{ dev, "S2MM.CURDESC" }
     , _curDescMsb{ dev, "S2MM.CURDESC_MSB" }
     , _tailDesc{ dev, "S2MM.TAILDESC" }
-    , _tailDescMsb{ dev, "S2MM.TAILDESC_MSB" } {}
+    , _tailDescMsb{ dev, "S2MM.TAILDESC_MSB" }
+    , _event(dev.getVoidRegisterAccessor("S2MM.EVENT_DUMMY", { ChimeraTK::AccessMode::wait_for_new_data })) {}
 
     void start(uintptr_t start_desc);
 
-    // this has to be done in the backend?
     //  void arm_interrupt();
-    //  uint32_t clear_interrupt();
+    void wait_and_clear_interrupt();
 };

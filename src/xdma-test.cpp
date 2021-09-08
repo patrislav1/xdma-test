@@ -95,6 +95,7 @@ int main(int argc, char* argv[]) {
     ChimeraTK::Device zupExample("ZUP_EXAMPLE_APP");
 
     zupExample.open();
+    zupExample.activateAsyncRead();
 
     GpioStatus gpioStatus{ zupExample };
     if (!gpioStatus.is_ddr4_init_calib_complete()) {

@@ -25,6 +25,7 @@ S2MM.CURDESC                  0x00000001    0x00910038    0x00000004    0x000000
 S2MM.CURDESC_MSB              0x00000001    0x0091003C    0x00000004    0x00000000       32         0         0
 S2MM.TAILDESC                 0x00000001    0x00910040    0x00000004    0x00000000       32         0         0
 S2MM.TAILDESC_MSB             0x00000001    0x00910044    0x00000004    0x00000000       32         0         0
+S2MM.EVENT_DUMMY              0x00000000    0x00000000    0x00000000    0x00000000        0         0         0     INTERRUPT0:0
 
 # Buffer for DMA descriptors
 FPGA_MEM.SGDMA_DESC           0x00000800    0x00920000    0x00002000    0x00000000

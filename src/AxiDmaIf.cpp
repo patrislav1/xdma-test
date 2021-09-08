@@ -17,6 +17,9 @@
 #include <boost/log/sources/logger.hpp>
 
 void AxiDmaIf::start(uintptr_t start_desc) {
+    // After application start, one spurious event is received for some reason
+    _event.read();
+
     BOOST_LOG_SEV(_slg, blt::severity_level::debug)
       << "AxiDmaIf: start, start_desc = " << std::hex << start_desc << std::dec;
 
@@ -39,4 +42,14 @@ void AxiDmaIf::start(uintptr_t start_desc) {
 
     BOOST_LOG_SEV(_slg, blt::severity_level::trace)
       << "AxiDmaIf: DMA ctrl = 0x" << std::hex << _ctrlReg.rd_int() << std::dec;
+}
+
+void AxiDmaIf::wait_and_clear_interrupt() {
+    // Wait for interrupt
+    BOOST_LOG_SEV(_slg, blt::severity_level::trace) << "AxiDmaIf: read event";
+    _event.read();
+    BOOST_LOG_SEV(_slg, blt::severity_level::trace) << "AxiDmaIf: read event done.";
+
+    // Acknowledge interrupt
+    _statusReg.wr({ .IOC_Irq = 1 });
 }
