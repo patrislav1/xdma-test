@@ -46,9 +46,7 @@ void AxiDmaIf::start(uintptr_t start_desc) {
 
 void AxiDmaIf::wait_and_clear_interrupt() {
     // Wait for interrupt
-    BOOST_LOG_SEV(_slg, blt::severity_level::trace) << "AxiDmaIf: read event";
     _event.read();
-    BOOST_LOG_SEV(_slg, blt::severity_level::trace) << "AxiDmaIf: read event done.";
 
     // Acknowledge interrupt
     _statusReg.wr({ .IOC_Irq = 1 });

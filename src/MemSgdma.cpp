@@ -104,17 +104,16 @@ std::vector<int32_t> MemSgdma::get_full_buffers() {
         if (!desc.status.cmpit) {
             break;
         }
+        desc.status.cmpit = 0;
+        _wr_desc(_next_readable_buf, desc);
 
         assert(_buf_len == desc.status.buffer_len && "buffer len mismatch");
-        _buffers[i].read();
-        std::vector<int32_t> tmp(_buffers[i].getNElements());
-        _buffers[i].swap(tmp);
+        _buffers[_next_readable_buf].read();
+        std::vector<int32_t> tmp(_buffers[_next_readable_buf].getNElements());
+        _buffers[_next_readable_buf].swap(tmp);
         BOOST_LOG_SEV(_slg, blt::severity_level::trace) << "save buf #" << _next_readable_buf << " @ 0x" << std::hex << desc.buffer_addr;
 
         result.insert(result.end(), tmp.begin(), tmp.begin() + desc.status.buffer_len / sizeof(tmp[0]));
-
-        desc.status.cmpit = 0;
-        _wr_desc(_next_readable_buf, desc);
 
         _next_readable_buf++;
         _next_readable_buf %= _nr_cyc_desc;
