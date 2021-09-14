@@ -110,9 +110,12 @@ int main(int argc, char* argv[]) {
     axi_dma.start(mem_sgdma.get_first_desc_addr());
     traffic_gen.start(nr_pkts, pkt_len, pkt_pause);
 
-    int i = 10000;
-    while (i--) {
+    size_t num_words = 0;
+    const size_t num_words_expected = 16 * pkt_len * nr_pkts / sizeof(int);
+    while (num_words < num_words_expected) {
+        axi_dma.wait_and_clear_interrupt();
         auto res = mem_sgdma.get_full_buffers();
+        num_words += res.size();
         if (!res.empty()) {
             if (!check_vals(res)) {
                 break;
