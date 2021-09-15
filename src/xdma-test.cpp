@@ -115,8 +115,8 @@ int main(int argc, char* argv[]) {
     while (num_words < num_words_expected) {
         axi_dma.wait_and_clear_interrupt();
         auto res = mem_sgdma.get_full_buffers();
-        std::cout << res.size() << " words received\n";
         num_words += res.size();
+        std::cout << res.size() << " words received, total " << num_words << " of " << num_words_expected << "\n";
         if (!res.empty()) {
             if (!check_vals(res)) {
                 break;
