@@ -18,7 +18,7 @@
 
 void AxiDmaIf::start(uintptr_t start_desc) {
     // After application start, one spurious event is received for some reason
-    _event.read();
+    //    _event.read();
 
     BOOST_LOG_SEV(_slg, blt::severity_level::debug)
       << "AxiDmaIf: start, start_desc = " << std::hex << start_desc << std::dec;

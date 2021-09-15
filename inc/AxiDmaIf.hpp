@@ -71,6 +71,5 @@ public:
 
     void start(uintptr_t start_desc);
 
-    //  void arm_interrupt();
     void wait_and_clear_interrupt();
 };
